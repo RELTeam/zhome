@@ -1,0 +1,47 @@
+name: Build Site
+
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+      - ".gitignore"
+      - ".github/dependabot.yml"
+  pull_request:
+  
+jobs:
+  typescript:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        npm install
+    - name: Build Typescript
+      run: |
+        npm run build-ts
+    - name: Upload Built Typescript
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: javascript
+        path: dist/
+  scss:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        npm install
+    - name: Build Scss
+      run: |
+        npm run scss-update
+    - name: Upload Built Scss
+      uses: actions/upload-artifact@v3.1.1
+      with:
+        name: css
+        path: dist/
