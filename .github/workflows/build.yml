@@ -48,6 +48,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/zerbermain'
+    needs: [typescript, scss]
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     steps:
     - name: Checkout 🛎️
