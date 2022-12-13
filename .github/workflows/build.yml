@@ -25,8 +25,8 @@ jobs:
     - name: Upload Built Typescript
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: javascript
-        path: dist/
+        name: index.js
+        path: dist/index.js
   scss:
     runs-on: ubuntu-latest
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
@@ -37,11 +37,41 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install
-    - name: Build Scss
+    - name: Build SCSS
       run: |
         npm run scss-update
-    - name: Upload Built Scss
+    - name: Upload Built SCSS
       uses: actions/upload-artifact@v3.1.1
       with:
-        name: css
+        name: style.css
+        path: dist/style.css
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/zerbermain'
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    steps:
+    - name: Checkout 🛎️
+      uses: actions/checkout@v3
+      
+    - name: Download JS
+      uses: actions/download-artifact@v3
+      with:
+        name: index.js
         path: dist/
+    - name: Download CSS
+      uses: actions/download-artifact@v3
+      with:
+        name: style.css
+        path: dist/
+        
+    - name: Copy Public
+      run: |
+        npm run copy-public
+      
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         publish_dir: ./dist
+         publish_branch: deploy
+         allow_empty_commit: true
