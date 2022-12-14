@@ -1,1 +1,3 @@
-console.log('it works!')
+import { addBar } from "./bar"
+
+addBar()
