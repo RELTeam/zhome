@@ -1,8 +1,5 @@
 export function bar(): Node {
-    const div = document.createElement('div')
-    div.id = "bar"
-    div.innerHTML = `<span id="barTitle">ZHome</span>`
-    return div
+    return `<div id="bar"><span id="barTitle">ZHome</span></div>`
 }
 
 export function addBar() {
