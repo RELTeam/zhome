@@ -5,5 +5,5 @@ export function bar(): Node {
 }
 
 export function addBar() {
-    document.body.appendChild(bar())
+    document.body.innerHTML = bar() + document.body.innerHTML
 }
